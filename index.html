@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>뉴스 히스토리</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css" />
+    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
+</head>
+<body> 
+
+<div data-role="page">
+
+    <div data-role="header">
+        <h1>뉴스 히스토리</h1>
+    </div><!-- /header -->
+
+    <div data-role="content">
+        <ul data-role="listview" id="list">
+		
+        </ul>
+    </div><!-- /content -->
+
+</div><!-- /page -->
+
+<script>
+ 
+
+//domready
+$(function(){
+	
+	// 처음에 로딩표시 보여주기
+	$.mobile.showPageLoadingMsg();
+	
+	//리스트 만들기 ,
+    $.getJSON("/api/list", function(data){
+    	var str = '',
+    		link = '';
+    	
+        for(var i=0; i < data.length; i++){
+			
+            str += '<li><a href="/view?newsid='+ data[i].newsid +'">'+ decodeURIComponent(data[i].text) +'</a></li>';
+        }
+
+        $('#list').html(str);
+        $('#list').listview('refresh'); //jQueryMobile형태의 list로 렌더링 
+        
+        
+        $.mobile.hidePageLoadingMsg();
+    });
+});
+</script>
+</body>
+</html>
